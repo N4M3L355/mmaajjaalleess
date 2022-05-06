@@ -41,7 +41,7 @@ var http = require('http')
 var serveStatic = require('serve-static')
 
 // Serve up public/ftp folder
-var serve = serveStatic('client', { index: ['qr.html'] })
+var serve = serveStatic('./client', { index: ['qr.html'] })
 
 // Create server
 var server = http.createServer(function onRequest (req, res) {
