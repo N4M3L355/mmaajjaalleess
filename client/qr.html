@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title of the document</title>
+</head>
+<style>
+    @font-face {
+        font-family: 'Coolvetica';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Coolvetica'), url('./coolvetica_rg.ttf');
+    }
+    .mainImage{
+        width:600px;
+    }
+    .button{
+        font-family: Coolvetica, sans-serif;
+        width:12rem;
+        height:4rem;
+        color: #e83125;
+        background-color: #180b3e;
+        border: 5px solid #e83125;
+    }
+</style>
+<body onload="myFunction()">
+<p>There is a hidden message for you. Click to see it.</p>
+<button class = "button" onclick="myFunction()">Click me!</button>
+<p id="demo"></p>
+<script>
+  let TO;
+  clearTO = () => clearTimeout(TO);
+  let myFunction = () => {
+    document.body.innerHTML+="sending request for photo in 3 seconds"
+    TO = setTimeout(() => {
+      ws.send("iwantphoto")
+    },3000)
+  }
+  const ws = new WebSocket('ws://minecraft.xn--krl-fla.com:7560');
+  ws.onopen = () => {
+
+  };
+  ws.onmessage = (data) => {  //iwantphoto
+
+    console.log(data.data);
+    // Buffer for the jpg data
+// Create an HTML img tag
+    var imageElem = document.createElement('img');
+// Just use the toString() method from your buffer instance
+// to get date as base64 type
+    imageElem.src = 'data:image/jpeg;base64,' + data.data;
+    imageElem.classList.add("mainImage")
+    document.body.append(imageElem);
+  };
+</script>
+</body>
+</html>
