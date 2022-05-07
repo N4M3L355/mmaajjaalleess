@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title of the document</title>
+    <title>Fotkaaa</title>
 </head>
 <style>
     @font-face {
@@ -10,32 +10,62 @@
         font-weight: 400;
         src: local('Coolvetica'), url('./coolvetica_rg.ttf');
     }
+    body{
+        font-size: 24px;
+        background-color: #180b3e;
+        color: #FFF;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+    }
+    .main{
+        display: flex;
+        flex-direction: column;
+        padding-top:4rem;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+    }
+    *{
+
+        font-family: Coolvetica, sans-serif;
+    }
     .mainImage{
         width:600px;
     }
     .button{
-        font-family: Coolvetica, sans-serif;
-        width:12rem;
-        height:4rem;
+        padding:1rem 2rem;
+        font-size: 2rem;
         color: #e83125;
         background-color: #180b3e;
         border: 5px solid #e83125;
+        max-width: 12rem;
     }
 </style>
 <body onload="myFunction()">
-<p>There is a hidden message for you. Click to see it.</p>
-<button class = "button" onclick="myFunction()">Click me!</button>
-<p id="demo"></p>
+<div class="main">
+    <h2>"sending request for photo in <span id='seconds'>x</span> seconds"</h2>
+    <button class = "button" onclick="myFunction()">stop</button>
+    <div id="output"></div>
+</div>
+</body>
 <script>
   let TO;
-  clearTO = () => clearTimeout(TO);
-  let myFunction = () => {
-    document.body.innerHTML+="sending request for photo in 3 seconds"
-    TO = setTimeout(() => {
-      ws.send("iwantphoto")
-    },3000)
-  }
   const ws = new WebSocket('ws://minecraft.xn--krl-fla.com:7560');
+  clearTO = () => clearTimeout(TO);
+  let myFunction = async () => {
+    var text = document.createElement('h2');
+    for(i=5;i>=0;i--){
+      await (new Promise(resolve => {
+        document.getElementById("seconds").innerHTML = i;
+        setTimeout(() => resolve(),1000)
+      }))
+    }
+    console.log("yeet now")
+    ws.send("iwantphoto")
+
+  }
   ws.onopen = () => {
 
   };
@@ -49,8 +79,12 @@
 // to get date as base64 type
     imageElem.src = 'data:image/jpeg;base64,' + data.data;
     imageElem.classList.add("mainImage")
-    document.body.append(imageElem);
+    document.getElementById("output").append(imageElem);
+    var a = document.createElement("a"); //Create <a>
+    a.href ='data:image/jpeg;base64,' + data.data; //Image Base64 Goes here
+    a.download = "Image.png"; //File name Here
+    a.innerHTML = "yeet"
+    document.getElementById("output").append(a);
   };
 </script>
-</body>
 </html>
